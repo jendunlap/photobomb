@@ -3,73 +3,73 @@ const User = require('../models/user')
 
 // ALBUM
 
-const createCard = async (req, res) => {
+const createAlbum = async (req, res) => {
   try {
-    const card = await new Card(req.body)
-    await card.save()
+    const album = await new Album(req.body)
+    await album.save()
     return res.status(201).json({
-      card
+      album
     })
   } catch (error) {
     return res.status(500).json({ error: error.message })
   }
 }
 
-const getAllCards = async (req, res) => {
+const getAllAlbums = async (req, res) => {
   try {
-    const cards = await Card.find()
-    return res.status(200).json({ cards })
+    const albums = await Album.find()
+    return res.status(200).json({ albums })
   } catch (error) {
     return res.status(500).send(error.message)
   }
 }
 
-const getCardById = async (req, res) => {
+const getAlbumById = async (req, res) => {
   try {
     const { id } = req.params
-    const card = await Card.findById(id)
-    if (card) {
-      return res.status(200).json({ card })
+    const album = await Album.findById(id)
+    if (album) {
+      return res.status(200).json({ album })
     }
-    return res.status(404).send('The Card does not exist')
+    return res.status(404).send('This Album must have been moved or deleted 😭')
   } catch (error) {
     return res.status(500).send(error.message)
   }
 }
 
-const getCardByName = async (req, res) => {
+const getAlbumByName = async (req, res) => {
   try {
     const { name } = req.params
-    const card = await Card.findOne({ name })
-    if (card) {
-      return res.status(200).json({ card })
+    const album = await Album.findOne({ name })
+    if (album) {
+      return res.status(200).json({ album })
     }
-    return res.status(404).send('The Card does not exist')
+    return res.status(404).send('This Album must have been moved or deleted 😭')
   } catch (error) {
     return res.status(500).send(error.message)
   }
 }
 
-const updateCard = async (req, res) => {
+const updateAlbum = async (req, res) => {
   console.log(req.body)
   try {
-    const card = await Card.findByIdAndUpdate(req.params.id, req.body, {
+    const album = await Album.findByIdAndUpdate(req.params.id, req.body, {
       new: true
     })
-    res.status(200).json(card)
+    res.status(200).json(album)
   } catch (error) {
     return res.status(500).send(error.message)
   }
 }
 
-const deleteCard = async (req, res) => {
+const deleteAlbum = async (req, res) => {
   try {
     const { id } = req.params
-    const deleted = await Sign.findByIdAndDelete(id)
+    const deleted = await Album.findByIdAndDelete(id)
     if (deleted) {
-      return res.status(200).send('Sign deleted')
+      return res.status(200).send('Album deleted')
     }
-    throw new Error('Sign not found')
+    throw new Error('Album not found')
   } catch (error) {
     return res.status(500).send(error.message)
   }

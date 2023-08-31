@@ -1,5 +1,5 @@
 const { Router } = require('express')
-// const controllers = require('../controllers')
+const controllers = require('../controllers')
 // const middleware = require('../middleware')
 const router = Router()
 
@@ -23,18 +23,18 @@ router.get('/users', controllers.getAllUsers)
 
 router.get('/users/:id', controllers.getUserById)
 
-router.put(
-  '/users/:id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controllers.updateUser
-)
+// router.put(
+//   '/users/:id',
+//   middleware.stripToken,
+//   middleware.verifyToken,
+//   controllers.updateUser
+// )
 
-router.delete(
-  '/users/:id',
-  middleware.stripToken,
-  middleware.verifyToken,
-  controllers.deleteUser
-)
+// router.delete(
+//   '/users/:id',
+//   middleware.stripToken,
+//   middleware.verifyToken,
+//   controllers.deleteUser
+// )
 
 module.exports = router
