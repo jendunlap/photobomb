@@ -4,6 +4,7 @@ import Nav from './components/Nav'
 import Home from './pages/Home'
 import Albums from './pages/Albums'
 import About from './pages/About'
+import Create from './pages/Create'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/albums" element={<Albums />} />
           <Route path="/about" element={<About />} />
+          <Route path="/create" element={<Create />} />
         </Routes>
       </main>
     </div>

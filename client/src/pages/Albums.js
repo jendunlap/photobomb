@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Album from '../components/Album'
 
@@ -26,18 +27,25 @@ const Albums = () => {
   //don't use effect until there actually are albums, duh
 
   return (
-    <div className="albumsGrid">
-      {albums
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((album) => (
-          <Album
-            id={album._id}
-            key={album._id}
-            image={album.image}
-            name={album.name}
-            onClick={viewAlbum}
-          />
-        ))}
+    <div>
+      <div>
+        <Link to="/create">
+          <h1>CREATE NEW ALBUM</h1>
+        </Link>
+      </div>
+      <div className="albumsGrid">
+        {albums
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((album) => (
+            <Album
+              id={album._id}
+              key={album._id}
+              image={album.image}
+              name={album.name}
+              onClick={viewAlbum}
+            />
+          ))}
+      </div>
     </div>
   )
 }
