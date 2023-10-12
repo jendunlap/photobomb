@@ -16,12 +16,14 @@ const Albums = () => {
   }
 
   const viewAlbum = (id) => {
-    navigate(`/albumss/${id}`)
+    navigate(`/albums/${id}`)
   }
 
-  useEffect(() => {
-    getAlbums()
-  }, [albumId])
+  // useEffect(() => {
+  //   getAlbums()
+  // }, [albumId])
+
+  //don't use effect until there actually are albums, duh
 
   return (
     <div className="albumsGrid">
