@@ -2,13 +2,53 @@
   text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+body {
+  background-image: url('https://i.imgur.com/4MWBUS1.jpg');
+  margin: 0;
+  background-color:#0f111b;
+  overflow-y: auto;
+  background-attachment: fixed;
+  background-size: cover;
+  height: 100vh;
+}
+
+/* NAV */
+.header {
+  background-color:#0f111b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  width: 100vw;
+  padding: .5em;
+}
+
+.headerLink {
+  text-decoration: none;
+  color: white;
+  font-size: 2em;
+  padding: 1em;
+}
+
+/* HOMEPAGE */
+
+.home {
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 50vh;
+}
+
+.homeHeader {
+  margin: 0;
+  font-size: 4em;
+}
+
+/* ALBUMS PAGE */
+.albums {
+  background-color:#0f111b;
+  height: 100vh;
 }
