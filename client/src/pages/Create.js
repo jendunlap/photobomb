@@ -25,9 +25,9 @@ const Create = () => {
     <div>
       <button onClick={() => addComponent('Grid')}>Add Grid</button>
       <button onClick={() => addComponent('Hero')}>Add Hero</button>
-      <button onClick={() => addComponent('Image')}>Add Hero</button>
-      <button onClick={() => addComponent('Images')}>Add Hero</button>
-      <button onClick={() => addComponent('Text')}>Add Hero</button>
+      <button onClick={() => addComponent('Image')}>Add Image</button>
+      <button onClick={() => addComponent('Images')}>Add Images</button>
+      <button onClick={() => addComponent('Text')}>Add Text</button>
 
       {albumComponents.map((component, index) => (
         <Registry

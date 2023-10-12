@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Grid from '../components/Grid'
 import Hero from '../components/Hero'
 import Image from '../components/Image'
-import Images from '../components/Image'
+import Images from '../components/Images'
 import Text from '../components/Text'
 
 const Registry = ({ component, onEdit }) => {
