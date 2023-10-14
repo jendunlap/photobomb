@@ -18,10 +18,16 @@ const Modify = () => {
 
   useEffect(() => {
     const getAlbumInfo = async () => {
-      const response = await axios.get(`/albums/${albumId}`)
+      try {
+        const response = await axios.get(`/albums/${albumId}`)
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error fetching album information', error)
+      }
     }
+
     getAlbumInfo()
-  }, [])
+  }, [albumId])
 
   const editComponent = (index, updatedContent) => {
     const updatedComponents = [...albumComponents]
