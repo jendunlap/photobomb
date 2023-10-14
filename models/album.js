@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const Album = new Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: false },
     image: { type: String, required: false }
   },
   { timestamps: true }

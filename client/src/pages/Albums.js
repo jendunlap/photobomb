@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import axios from 'axios'
 import Album from '../components/Album'
 
@@ -20,17 +20,15 @@ const Albums = () => {
     navigate(`/albums/${id}`)
   }
 
-  // useEffect(() => {
-  //   getAlbums()
-  // }, [albumId])
-
-  //don't use effect until there actually are albums, duh
+  useEffect(() => {
+    getAlbums()
+  }, [albumId])
 
   const createAlbumButton = async () => {
     try {
       const response = await axios.post('/albums')
-      let newAlbumID = response.data.id
-      navigate(`/edit/${newAlbumID}`)
+      let albumId = response.data.id
+      navigate(`/edit/${albumId}`)
     } catch (error) {
       console.error('Could not create a new album', error)
     }
