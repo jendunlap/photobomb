@@ -17,6 +17,8 @@ router.put('/albums/:id', controllers.updateAlbum)
 
 router.delete('/albums/:id', controllers.deleteAlbum)
 
+router.post('/albums/:albumId/grids', controllers.createGrid)
+
 router.post('/users', controllers.createUser)
 
 router.get('/users', controllers.getAllUsers)

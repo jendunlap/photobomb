@@ -75,6 +75,79 @@ const deleteAlbum = async (req, res) => {
   }
 }
 
+// GRIDS
+
+const createGrid = async (req, res) => {
+  try {
+    const albumId = req.params.albumId
+    const gridData = req.body
+    const album = await Album.findById(albumId)
+
+    if (!album) {
+      return res.status(404).send('Album not found')
+    }
+
+    const grid = await new Grid({ ...gridData, album: albumId })
+    await grid.save()
+
+    album.grids.push(grid._id)
+    await album.save()
+
+    return res.status(201).json({ grid })
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+const updateGrid = async (req, res) => {
+  try {
+    const albumId = req.params.albumId
+    const gridId = req.params.gridId
+    const gridData = req.body
+
+    const album = await Album.findById(albumId)
+    if (!album) {
+      return res.status(404).send('Album not found')
+    }
+
+    const grid = await Grid.findOne({ _id: gridId, album: albumId })
+    if (!grid) {
+      return res.status(404).send('Grid not found')
+    }
+
+    grid.set(gridData)
+    await grid.save()
+
+    return res.status(200).json({ grid })
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+const deleteGrid = async (req, res) => {
+  try {
+    const albumId = req.params.albumId
+    const gridId = req.params.gridId
+    const album = await Album.findById(albumId)
+    if (!album) {
+      return res.status(404).send('Album not found')
+    }
+
+    const grid = await Grid.findOne({ _id: gridId, album: albumId })
+    if (!grid) {
+      return res.status(404).send('Grid not found')
+    }
+
+    album.grids.pull(gridId)
+    await album.save()
+    await grid.remove()
+
+    return res.status(200).send('Grid deleted')
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
 // USERS
 
 const createUser = async (req, res) => {
@@ -143,6 +216,9 @@ module.exports = {
   getAlbumByName,
   updateAlbum,
   deleteAlbum,
+  createGrid,
+  updateGrid,
+  deleteGrid,
   createUser,
   getAllUsers,
   getUserById,
