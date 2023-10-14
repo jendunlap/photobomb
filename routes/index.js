@@ -9,7 +9,7 @@ router.get('/albums', controllers.getAllAlbums)
 
 router.post('/albums', controllers.createAlbum)
 
-router.get('/albumss/:id', controllers.getAlbumById)
+router.get('/albums/:id', controllers.getAlbumById)
 
 router.get('/albums/:name', controllers.getAlbumByName)
 
