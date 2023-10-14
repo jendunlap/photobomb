@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import Registry from '../components/Registry'
 
 const Modify = () => {
+  let { albumId } = useParams()
   let navigate = useNavigate()
 
   const [albumComponents, setAlbumComponents] = useState([])
@@ -14,6 +15,13 @@ const Modify = () => {
     }
     setAlbumComponents([...albumComponents, newComponent])
   }
+
+  useEffect(() => {
+    const getAlbumInfo = async () => {
+      const response = await axios.get(`/albums/${albumId}`)
+    }
+    getAlbumInfo()
+  }, [])
 
   const editComponent = (index, updatedContent) => {
     const updatedComponents = [...albumComponents]

@@ -26,23 +26,20 @@ const Albums = () => {
 
   //don't use effect until there actually are albums, duh
 
-  const createAlbumButton = ({ createNewAlbum }) => {
-    const handleCreateAlbum = async (event) => {
-      event.preventDefault()
-      try {
-        const response = await axios.post('/albums')
-        let newAlbumID = response.data.id
-        navigate(`/edit/${newAlbumID}`)
-      } catch (error) {
-        console.error('Could not create new album', error)
-      }
+  const createAlbumButton = async () => {
+    try {
+      const response = await axios.post('/albums')
+      let newAlbumID = response.data.id
+      navigate(`/edit/${newAlbumID}`)
+    } catch (error) {
+      console.error('Could not create a new album', error)
     }
   }
 
   return (
     <div>
       <div>
-        <button onClick={handleCreateAlbum}>Create New Album!</button>
+        <button onClick={createAlbumButton}>Create New Album!</button>
       </div>
       <div className="albumsGrid">
         {albums
