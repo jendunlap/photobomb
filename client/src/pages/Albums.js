@@ -27,7 +27,8 @@ const Albums = () => {
   const createAlbumButton = async () => {
     try {
       const response = await axios.post('/albums')
-      let albumId = response.data.id
+      console.log(response)
+      let albumId = response.data.album._id
       navigate(`/edit/${albumId}`)
     } catch (error) {
       console.error('Could not create a new album', error)
@@ -41,6 +42,7 @@ const Albums = () => {
       </div>
       <div className="albumsGrid">
         {albums
+          .filter((album) => album.name)
           .sort((a, b) => a.name.localeCompare(b.name))
           .map((album) => (
             <Album
