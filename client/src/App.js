@@ -16,6 +16,7 @@ function App() {
           <Route path="/albums" element={<Albums />} />
           <Route path="/about" element={<About />} />
           <Route path="/create" element={<Create />} />
+          <Route path="/edit/:albumId" element={<Modify />} />
         </Routes>
       </main>
     </div>
