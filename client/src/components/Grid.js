@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 
 const Grid = () => {
   let navigate = useNavigate()
+  const { albumId } = useParams()
 
   const initialState = {
     image1: '',
@@ -21,7 +22,8 @@ const Grid = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     console.log(formState)
-    await axios.post('//albums/${albumId}/grids', formState)
+    await axios.post(`/albums/${albumId}/grids`, formState)
+    navigate(`/modify/${albumId}`)
   }
 
   return (
