@@ -28,8 +28,13 @@ const Albums = () => {
     try {
       const response = await axios.post('/albums')
       console.log(response)
-      let albumId = response.data.album._id
-      navigate(`/edit/${albumId}`)
+
+      if (response.data.id) {
+        let albumId = response.data.id
+        navigate(`/edit/${albumId}`)
+      } else {
+        console.error('Invalid response from the server: No album ID found.')
+      }
     } catch (error) {
       console.error('Could not create a new album', error)
     }
