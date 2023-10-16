@@ -8,11 +8,10 @@ const Modify = () => {
   let navigate = useNavigate()
 
   const initialState = {
-    name: '',
+    name: 'album name',
     components: []
   }
 
-  // const [albumComponents, setAlbumComponents] = useState([])
   const [formState, setFormState] = useState(initialState)
 
   const addComponent = (type) => {
@@ -27,8 +26,6 @@ const Modify = () => {
       ...formState,
       components: [...formState.components, newComponent]
     })
-    // setAlbumComponents([...albumComponents, newComponent])
-    // console.log('Album Components:', albumComponents)
   }
 
   useEffect(() => {
@@ -72,20 +69,18 @@ const Modify = () => {
 
   return (
     <div>
-      {/* <form className="modifyForm" onSubmit={handleSubmit}>
-        <label htmlFor="name">name your album!</label>
-        <input
-          onChange={handleChange}
-          type="text"
-          id="name"
-          value={formState.name}
-        /> */}
+      <label htmlFor="name">name your album!</label>
+      <input
+        onChange={handleChange}
+        type="text"
+        id="name"
+        value={formState.name}
+      />
       <button onClick={() => addComponent('Grid')}>Add Grid</button>
       <button onClick={() => addComponent('Hero')}>Add Hero</button>
       <button onClick={() => addComponent('Image')}>Add Image</button>
       <button onClick={() => addComponent('Images')}>Add Images</button>
       <button onClick={() => addComponent('Text')}>Add Text</button>
-      {/* </form> */}
 
       {formState.components.map((component, index) => (
         <div key={index}>

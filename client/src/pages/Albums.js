@@ -17,7 +17,7 @@ const Albums = () => {
   }
 
   const viewAlbum = (id) => {
-    navigate(`/albums/${id}`)
+    navigate(`/edit/${id}`)
   }
 
   useEffect(() => {

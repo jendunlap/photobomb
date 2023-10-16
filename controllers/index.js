@@ -1,5 +1,6 @@
 const Album = require('../models/album')
 const User = require('../models/user')
+const Grid = require('../models/grid')
 
 // ALBUM
 
@@ -95,6 +96,7 @@ const createGrid = async (req, res) => {
 
     return res.status(201).json({ grid })
   } catch (error) {
+    console.error('Error creating grid:', error)
     return res.status(500).json({ error: error.message })
   }
 }

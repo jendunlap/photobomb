@@ -23,17 +23,17 @@ const Grid = () => {
     event.preventDefault()
     console.log(formState)
     await axios.post(`/albums/${albumId}/grids`, formState)
-    navigate(`/modify/${albumId}`)
+    navigate(`/edit/${albumId}`)
   }
 
   return (
     <div className="gridDiv">
       <form className="gridForm">
-        <label htmlFor="image 1">
+        <label htmlFor="image1">
           <input
             onChange={handleChange}
             type="text"
-            id="image 1"
+            id="image1"
             value={formState.image1}
           />
         </label>
