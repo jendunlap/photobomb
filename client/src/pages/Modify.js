@@ -8,7 +8,7 @@ const Modify = () => {
   let navigate = useNavigate()
 
   const initialState = {
-    name: 'album name',
+    name: '',
     components: []
   }
 
@@ -22,15 +22,16 @@ const Modify = () => {
           const response = await axios.get(`/albums/${albumId}`)
           console.log(response.data)
 
+          // setFormState(response.data.album)
+
           setFormState({
-            ...formState,
-            components: response.data.components || []
+            name: response.data.album.name,
+            components: response.data.album.components || []
           })
         } catch (error) {
           console.error('Error fetching album information', error)
         }
       }
-
       getAlbumInfo()
     }
   }, [albumId])
@@ -40,9 +41,6 @@ const Modify = () => {
       type,
       content: {}
     }
-
-    console.log('Adding component:', newComponent)
-
     setFormState((prevState) => ({
       ...prevState,
       components: [...prevState.components, newComponent]
