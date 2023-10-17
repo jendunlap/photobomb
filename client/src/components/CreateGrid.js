@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 
-const CreateGrid = () => {
+const CreateGrid = (setAddedComponents = { setAddedComponents }) => {
   let navigate = useNavigate()
   const { albumId } = useParams()
 
@@ -31,6 +31,7 @@ const CreateGrid = () => {
       setFormState({ ...formState, [event.target.id]: event.target.value })
     }
   }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
@@ -41,6 +42,19 @@ const CreateGrid = () => {
       })
       console.log(response.data)
       if (response.data.gridId) {
+        const newGridComponent = {
+          type: 'Grid',
+          content: {
+            name: formState.name
+            // Add other properties here eventually maybe
+          }
+        }
+
+        setAddedComponents((prevAddedComponents) => [
+          ...prevAddedComponents,
+          newGridComponent
+        ])
+
         navigate(`/edit/${albumId}`)
       }
     } catch (error) {

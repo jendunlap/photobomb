@@ -39,10 +39,15 @@ const Modify = () => {
       type,
       content: {}
     }
+
+    console.log('Before adding component:', formState)
+
     setFormState((prevState) => ({
       ...prevState,
       components: [...prevState.components, newComponent]
     }))
+
+    console.log('After adding component:', formState)
 
     setAddedComponents((prevAddedComponents) => [
       ...prevAddedComponents,
@@ -52,6 +57,8 @@ const Modify = () => {
   }
 
   const editComponent = (index, updatedContent) => {
+    console.log('Before editing component:', formState)
+
     const updatedComponents = [...formState.components]
     updatedComponents[index].content = updatedContent
 
@@ -59,6 +66,8 @@ const Modify = () => {
       ...prevState,
       components: updatedComponents
     }))
+
+    console.log('After editing component:', formState)
   }
 
   const handleSubmit = async (event) => {
