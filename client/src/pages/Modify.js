@@ -22,8 +22,6 @@ const Modify = () => {
           const response = await axios.get(`/albums/${albumId}`)
           console.log(response.data)
 
-          // setFormState(response.data.album)
-
           setFormState({
             name: response.data.album.name,
             components: response.data.album.components || []
@@ -100,11 +98,21 @@ const Modify = () => {
         id="name"
         value={formState.name}
       />
-      <button onClick={() => addComponent('Grid')}>Add Grid</button>
-      <button onClick={() => addComponent('Hero')}>Add Hero</button>
-      <button onClick={() => addComponent('Image')}>Add Image</button>
-      <button onClick={() => addComponent('Images')}>Add Images</button>
-      <button onClick={() => addComponent('Text')}>Add Text</button>
+      <button onClick={() => addComponent({ type: 'Grid', content: {} })}>
+        Add Grid
+      </button>
+      <button onClick={() => addComponent({ type: 'Hero', content: {} })}>
+        Add Hero
+      </button>
+      <button onClick={() => addComponent({ type: 'Image', content: {} })}>
+        Add Image
+      </button>
+      <button onClick={() => addComponent({ type: 'Images', content: {} })}>
+        Add Images
+      </button>
+      <button onClick={() => addComponent({ type: 'Text', content: {} })}>
+        Add Text
+      </button>
 
       {formState.components &&
         formState.components.map((component, index) => (
