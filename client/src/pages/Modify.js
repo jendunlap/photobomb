@@ -48,6 +48,17 @@ const Modify = () => {
       ...prevAddedComponents,
       newComponent
     ])
+    console.log(newComponent)
+  }
+
+  const editComponent = (index, updatedContent) => {
+    const updatedComponents = [...formState.components]
+    updatedComponents[index].content = updatedContent
+
+    setFormState((prevState) => ({
+      ...prevState,
+      components: updatedComponents
+    }))
   }
 
   const handleSubmit = async (event) => {
@@ -79,16 +90,6 @@ const Modify = () => {
     navigate(`/albums`)
   }
 
-  const editComponent = (index, updatedContent) => {
-    const updatedComponents = [...formState.components]
-    updatedComponents[index].content = updatedContent
-
-    setFormState({
-      ...formState,
-      components: updatedComponents
-    })
-  }
-
   return (
     <div>
       <label htmlFor="name">name your album!</label>
@@ -98,21 +99,11 @@ const Modify = () => {
         id="name"
         value={formState.name}
       />
-      <button onClick={() => addComponent({ type: 'Grid', content: {} })}>
-        Add Grid
-      </button>
-      <button onClick={() => addComponent({ type: 'Hero', content: {} })}>
-        Add Hero
-      </button>
-      <button onClick={() => addComponent({ type: 'Image', content: {} })}>
-        Add Image
-      </button>
-      <button onClick={() => addComponent({ type: 'Images', content: {} })}>
-        Add Images
-      </button>
-      <button onClick={() => addComponent({ type: 'Text', content: {} })}>
-        Add Text
-      </button>
+      <button onClick={() => addComponent('Grid')}>Add Grid</button>
+      <button onClick={() => addComponent('Hero')}>Add Hero</button>
+      <button onClick={() => addComponent('Image')}>Add Image</button>
+      <button onClick={() => addComponent('Images')}>Add Images</button>
+      <button onClick={() => addComponent('Text')}>Add Text</button>
 
       {formState.components &&
         formState.components.map((component, index) => (

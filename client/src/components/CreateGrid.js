@@ -7,34 +7,56 @@ const CreateGrid = () => {
   const { albumId } = useParams()
 
   const initialState = {
-    image1: '',
-    image2: '',
-    image3: '',
-    image4: ''
+    name: '',
+    content: {
+      image1: '',
+      image2: '',
+      image3: '',
+      image4: ''
+    }
   }
 
   const [formState, setFormState] = useState(initialState)
 
   const handleChange = (event) => {
-    setFormState({ ...formState, [event.target.id]: event.target.value })
+    if (event.target.id.startsWith('image')) {
+      setFormState({
+        ...formState,
+        content: {
+          ...formState.content,
+          [event.target.id]: event.target.value
+        }
+      })
+    } else {
+      setFormState({ ...formState, [event.target.id]: event.target.value })
+    }
   }
-
   const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log(formState)
-    await axios.post(`/albums/${albumId}/grids`, formState)
-    navigate(`/edit/${albumId}`)
+    try {
+      const response = await axios.post(`/albums/${albumId}/grids`, {
+        type: 'Grid',
+        name: formState.name,
+        content: formState.content
+      })
+      console.log(response.data)
+      if (response.data.gridId) {
+        navigate(`/edit/${albumId}`)
+      }
+    } catch (error) {
+      console.error('Error creating grid', error)
+    }
   }
 
   return (
     <div className="gridDiv">
       <form className="gridForm">
-        <label htmlFor="image1">
+        <label htmlFor="name">
           <input
             onChange={handleChange}
             type="text"
-            id="image1"
-            value={formState.image1}
+            id="name"
+            value={formState.name}
           />
         </label>
       </form>
