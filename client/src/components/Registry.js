@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Grid from '../components/Grid'
+import CreateGrid from './CreateGrid'
 import Hero from '../components/Hero'
 import Image from '../components/Image'
 import Images from '../components/Images'
@@ -9,7 +9,7 @@ import Text from '../components/Text'
 const Registry = ({ component, onEdit }) => {
   switch (component.type) {
     case 'Grid':
-      return <Grid content={component.content} onEdit={onEdit} />
+      return <CreateGrid content={component.content} onEdit={onEdit} />
     case 'Hero':
       return <Hero content={component.content} onEdit={onEdit} />
     case 'Image':

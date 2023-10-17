@@ -13,6 +13,27 @@ const Modify = () => {
   }
 
   const [formState, setFormState] = useState(initialState)
+  const [addedComponents, setAddedComponents] = useState([])
+
+  useEffect(() => {
+    if (albumId) {
+      const getAlbumInfo = async () => {
+        try {
+          const response = await axios.get(`/albums/${albumId}`)
+          console.log(response.data)
+
+          setFormState({
+            ...formState,
+            components: response.data.components || []
+          })
+        } catch (error) {
+          console.error('Error fetching album information', error)
+        }
+      }
+
+      getAlbumInfo()
+    }
+  }, [albumId])
 
   const addComponent = (type) => {
     const newComponent = {
@@ -22,30 +43,35 @@ const Modify = () => {
 
     console.log('Adding component:', newComponent)
 
-    setFormState({
-      ...formState,
-      components: [...formState.components, newComponent]
-    })
+    setFormState((prevState) => ({
+      ...prevState,
+      components: [...prevState.components, newComponent]
+    }))
+
+    setAddedComponents((prevAddedComponents) => [
+      ...prevAddedComponents,
+      newComponent
+    ])
   }
-
-  useEffect(() => {
-    const getAlbumInfo = async () => {
-      try {
-        const response = await axios.get(`/albums/${albumId}`)
-        console.log(response.data)
-      } catch (error) {
-        console.error('Error fetching album information', error)
-      }
-    }
-
-    getAlbumInfo()
-  }, [albumId])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    await axios.put(`/albums/${albumId}`, formState)
-    setFormState(initialState)
-    navigate(`/albums/${albumId}`)
+
+    const updatedFormState = {
+      ...formState,
+      components: [...formState.components, ...addedComponents]
+    }
+
+    await axios.put(`/albums/${albumId}`, updatedFormState)
+
+    setFormState({
+      ...formState,
+      name: initialState.name
+    })
+
+    setAddedComponents([])
+
+    navigate(`/edit/${albumId}`)
   }
 
   const handleChange = (event) => {
@@ -82,15 +108,16 @@ const Modify = () => {
       <button onClick={() => addComponent('Images')}>Add Images</button>
       <button onClick={() => addComponent('Text')}>Add Text</button>
 
-      {formState.components.map((component, index) => (
-        <div key={index}>
-          {console.log('Rendering component:', component)}
-          <Registry
-            component={component}
-            onEdit={(updatedContent) => editComponent(index, updatedContent)}
-          />
-        </div>
-      ))}
+      {formState.components &&
+        formState.components.map((component, index) => (
+          <div key={index}>
+            {console.log('Rendering component:', component)}
+            <Registry
+              component={component}
+              onEdit={(updatedContent) => editComponent(index, updatedContent)}
+            />
+          </div>
+        ))}
 
       <button className="submitButton" type="submit" onClick={handleSubmit}>
         save changes
