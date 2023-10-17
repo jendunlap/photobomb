@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Registry from '../components/Registry'
@@ -13,7 +13,28 @@ const Modify = () => {
   }
 
   const [formState, setFormState] = useState(initialState)
+  // const { addedComponents, setAddedComponents } = useContext(AppContext)
   const [addedComponents, setAddedComponents] = useState([])
+  const [editingComponentIndex, setEditingComponentIndex] = useState(-1)
+  const [editedContent, setEditedContent] = useState({})
+
+  const handleEditComponent = (index) => {
+    setEditingComponentIndex(index)
+  }
+
+  const handleSaveEdit = () => {
+    // Save the edited content in your formState or wherever you store component data
+    const updatedComponents = [...formState.components]
+    updatedComponents[editingComponentIndex].content = editedContent
+
+    setFormState((prevState) => ({
+      ...prevState,
+      components: updatedComponents
+    }))
+
+    // Clear the editing state
+    setEditingComponentIndex(-1)
+  }
 
   useEffect(() => {
     if (albumId) {
@@ -49,11 +70,13 @@ const Modify = () => {
 
     console.log('After adding component:', formState)
 
-    setAddedComponents((prevAddedComponents) => [
-      ...prevAddedComponents,
-      newComponent
-    ])
-    console.log(newComponent)
+    // setAddedComponents((prevAddedComponents) => [
+    //   ...prevAddedComponents,
+    //   newComponent
+    // ])
+    // console.log(newComponent)
+
+    // console.log('Added Components:', addedComponents)
   }
 
   const editComponent = (index, updatedContent) => {
@@ -114,6 +137,17 @@ const Modify = () => {
       <button onClick={() => addComponent('Images')}>Add Images</button>
       <button onClick={() => addComponent('Text')}>Add Text</button>
 
+      {/* {formState.components &&
+        formState.components.map((component, index) => (
+          <div key={index}>
+            {console.log('Rendering component:', component)}
+            <Registry
+              component={component}
+              onEdit={(updatedContent) => editComponent(index, updatedContent)}
+            />
+          </div>
+        ))} */}
+
       {formState.components &&
         formState.components.map((component, index) => (
           <div key={index}>
@@ -122,6 +156,15 @@ const Modify = () => {
               component={component}
               onEdit={(updatedContent) => editComponent(index, updatedContent)}
             />
+            {editingComponentIndex === index ? (
+              // Display editing form or UI for the currently edited component
+              <div>
+                {/* Editing form/UI */}
+                <button onClick={handleSaveEdit}>Save</button>
+              </div>
+            ) : (
+              <button onClick={() => handleEditComponent(index)}>Edit</button>
+            )}
           </div>
         ))}
 

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useNavigate, Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 
-const CreateGrid = (setAddedComponents = { setAddedComponents }) => {
+const CreateGrid = () => {
   let navigate = useNavigate()
   const { albumId } = useParams()
 
@@ -40,20 +40,14 @@ const CreateGrid = (setAddedComponents = { setAddedComponents }) => {
         name: formState.name,
         content: formState.content
       })
-      console.log(response.data)
+
       if (response.data.gridId) {
         const newGridComponent = {
           type: 'Grid',
           content: {
             name: formState.name
-            // Add other properties here eventually maybe
           }
         }
-
-        setAddedComponents((prevAddedComponents) => [
-          ...prevAddedComponents,
-          newGridComponent
-        ])
 
         navigate(`/edit/${albumId}`)
       }
@@ -61,6 +55,38 @@ const CreateGrid = (setAddedComponents = { setAddedComponents }) => {
       console.error('Error creating grid', error)
     }
   }
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault()
+  //   try {
+  //     const response = await axios.post(`/albums/${albumId}/grids`, {
+  //       type: 'Grid',
+  //       name: formState.name,
+  //       content: formState.content
+  //     })
+
+  //     console.log(response.data)
+
+  //     if (response.data.gridId) {
+  //       const newGridComponent = {
+  //         type: 'Grid',
+  //         content: {
+  //           name: formState.name
+  //           // Add other properties here eventually maybe
+  //         }
+  //       }
+
+  //       setAddedComponents((prevAddedComponents) => [
+  //         ...prevAddedComponents,
+  //         newGridComponent
+  //       ])
+
+  //       navigate(`/edit/${albumId}`)
+  //     }
+  //   } catch (error) {
+  //     console.error('Error creating grid', error)
+  //   }
+  // }
 
   return (
     <div className="gridDiv">

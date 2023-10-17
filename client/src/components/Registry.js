@@ -7,9 +7,19 @@ import Images from '../components/Images'
 import Text from '../components/Text'
 
 const Registry = ({ component, onEdit }) => {
+  const handleEditClick = () => {
+    // When the "Edit" button is clicked, call the onEdit callback with the component's content
+    onEdit(component.content)
+  }
+
   switch (component.type) {
     case 'Grid':
-      return <CreateGrid content={component.content} onEdit={onEdit} />
+      return (
+        <div>
+          <CreateGrid content={component.content} onEdit={onEdit} />
+          {/* <button onClick={handleEditClick}>Edit</button> */}
+        </div>
+      )
     case 'Hero':
       return <Hero content={component.content} onEdit={onEdit} />
     case 'Image':
