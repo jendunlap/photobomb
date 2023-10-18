@@ -6,7 +6,7 @@ import Album from './components/Album'
 import Albums from './pages/Albums'
 import About from './pages/About'
 import Create from './pages/Create'
-import Modify from './pages/Modify'
+import ModifyAlbum from './pages/ModifyAlbum'
 import AlbumInfo from './pages/AlbumInfo'
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
           <Route path="/albums" element={<Albums />} />
           <Route path="/about" element={<About />} />
           <Route path="/create" element={<Create />} />
-          <Route path="/edit/:albumId" element={<Modify />} />
+          <Route path="/edit/:albumId" element={<ModifyAlbum />} />
           <Route path="/albums/:albumId" element={<AlbumInfo />} />
         </Routes>
       </main>

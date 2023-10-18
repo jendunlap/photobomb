@@ -21,7 +21,11 @@ const AlbumInfo = () => {
   }
 
   const modifyAlbum = async () => {
-    navigate(`/edit/${albumId}`)
+    try {
+      navigate(`/edit/${albumId}`)
+    } catch (error) {
+      console.error('Error navigating to edit:', error)
+    }
   }
 
   useEffect(() => {
@@ -39,8 +43,10 @@ const AlbumInfo = () => {
               alt={albumInfo.name}
             />
             <h1 className="albumBannerName">{albumInfo.name}</h1>
+            <button className="createAlbumButton" onClick={modifyAlbum}>
+              Edit Album!
+            </button>
           </div>
-          <button className="createAlbumButton">Add Component!</button>
         </div>
       ) : (
         <p>No Album Info.</p>

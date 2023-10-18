@@ -23,7 +23,7 @@ const Albums = () => {
     getAlbums()
   }, [albumId])
 
-  const createAlbumButton = async () => {
+  const createAlbum = async () => {
     try {
       const response = await axios.post('/albums')
       console.log(response)
@@ -42,7 +42,7 @@ const Albums = () => {
   return (
     <div>
       <div>
-        <button onClick={createAlbumButton} className="createAlbumButton">
+        <button onClick={createAlbum} className="createAlbumButton">
           Create New Album!
         </button>
       </div>
