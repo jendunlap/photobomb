@@ -79,7 +79,9 @@ const ModifyAlbum = () => {
             />
             <h1 className="albumBannerName">{albumInfo.name}</h1>
           </div>
-          <button onClick={openAddComponentModal}>Add Component</button>
+          <button className="createAlbumButton" onClick={openAddComponentModal}>
+            Add Component!
+          </button>
 
           <AddComponentModal
             isOpen={isModalOpen}
