@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Modal from 'react-modal'
+import axios from 'axios'
 
 Modal.setAppElement('#root')
 
@@ -20,29 +21,30 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
     return null
   }
 
-  const handleAddComponent = () => {
-    console.log('componentType:', componentType)
-    console.log('componentData:', componentData)
-
+  const handleAddComponent = async () => {
     if (componentType && componentData) {
-      const newComponent = createComponent(componentType, componentData)
+      const newComponent = createComponent()
       if (newComponent) {
-        const additionSuccessful = onAddComponent(newComponent)
-        if (additionSuccessful) {
-          onClose()
-        } else {
-          console.log('Error adding component:')
-          onClose()
+        onAddComponent(newComponent)
+        try {
+          await axios.post(`/albums/${albumId}/components`, newComponent)
+        } catch (error) {
+          console.error('Error creating component:', error)
         }
-      } else {
-        console.log('Error adding component: type or data missing')
         onClose()
       }
-    } else {
-      console.log('Error adding component: type or data missing')
-      onClose()
     }
   }
+
+  // const handleAddComponent = () => {
+  //   if (componentType && componentData) {
+  //     const newComponent = createComponent()
+  //     if (newComponent) {
+  //       onAddComponent(newComponent)
+  //       onClose()
+  //     }
+  //   }
+  // }
 
   return (
     <Modal

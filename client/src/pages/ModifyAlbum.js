@@ -41,6 +41,7 @@ const ModifyAlbum = () => {
       const response = await axios.get(`/albums/${albumId}`)
       setAlbumInfo(response.data.album)
       setFormState(response.data.album)
+      console.log(response.data.album)
     }
     getAlbumInfo()
   }, [albumId])
@@ -82,7 +83,7 @@ const ModifyAlbum = () => {
           />
 
           <div className="components-container">
-            {formState.components.map((component, index) => (
+            {albumInfo.components.map((component, index) => (
               <div key={index}>
                 {component.type === 'image-link' && (
                   <a

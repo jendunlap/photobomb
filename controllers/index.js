@@ -2,6 +2,7 @@ const Album = require('../models/album')
 const User = require('../models/user')
 const Grid = require('../models/grid')
 const Component = require('../models/component')
+const mongoose = require('mongoose')
 
 // ALBUM
 
