@@ -3,13 +3,14 @@
 }
 
 body {
-  background-image: url('https://i.imgur.com/4MWBUS1.jpg');
+  /* background-image: url('https://i.imgur.com/4MWBUS1.jpg'); */
   margin: 0;
   background-color:#0f111b;
   overflow-y: auto;
   background-attachment: fixed;
   background-size: cover;
   height: 100vh;
+  color: white;
 }
 
 /* NAV */
@@ -51,4 +52,29 @@ body {
 .albums {
   background-color:#0f111b;
   height: 100vh;
+}
+
+.albumDiv {
+  padding: 2em;
+}
+
+.albumsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.albumImage {
+  height: 20em
+}
+
+.createAlbumButton {
+  background-color: white;
+  border: none;
+  border-radius: 1em;
+  color: #0f111b;
+  font-style: bold;
+  font-size: 1em;
+  padding: 1em;
+  margin: 1em;
 }

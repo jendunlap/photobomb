@@ -16,7 +16,7 @@ const Albums = () => {
   }
 
   const viewAlbum = (id) => {
-    navigate(`/edit/${id}`)
+    navigate(`/albums/${id}`)
   }
 
   useEffect(() => {
@@ -42,7 +42,9 @@ const Albums = () => {
   return (
     <div>
       <div>
-        <button onClick={createAlbumButton}>Create New Album!</button>
+        <button onClick={createAlbumButton} className="createAlbumButton">
+          Create New Album!
+        </button>
       </div>
       <div className="albumsGrid">
         {albums

@@ -7,6 +7,7 @@ import Albums from './pages/Albums'
 import About from './pages/About'
 import Create from './pages/Create'
 import Modify from './pages/Modify'
+import AlbumInfo from './pages/AlbumInfo'
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/create" element={<Create />} />
           <Route path="/edit/:albumId" element={<Modify />} />
-          <Route path="/albums/:albumId" element={<Album />} />
+          <Route path="/albums/:albumId" element={<AlbumInfo />} />
         </Routes>
       </main>
     </div>
