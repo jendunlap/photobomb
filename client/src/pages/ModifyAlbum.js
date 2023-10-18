@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import AddComponentModal from '../components/AddComponentModal'
 
 const ModifyAlbum = () => {
   let { albumId } = useParams()
@@ -14,6 +15,33 @@ const ModifyAlbum = () => {
 
   const [formState, setFormState] = useState(initialState)
   const [albumInfo, setAlbumInfo] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [componentType, setComponentType] = useState('image')
+  const [componentData, setComponentData] = useState('')
+
+  const createComponent = (componentData) => {
+    return {
+      type: componentData.type,
+      data: componentData.data
+    }
+  }
+
+  const addComponent = (newComponent) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      components: [...prevState.components, newComponent]
+    }))
+  }
+
+  const openAddComponentModal = () => {
+    setIsModalOpen(true)
+    const newComponent = createComponent(componentType, componentData)
+    addComponent(newComponent)
+  }
+
+  const closeAddComponentModal = () => {
+    setIsModalOpen(false)
+  }
 
   useEffect(() => {
     const getAlbumInfo = async () => {
@@ -47,7 +75,13 @@ const ModifyAlbum = () => {
             />
             <h1 className="albumBannerName">{albumInfo.name}</h1>
           </div>
-          <button className="createAlbumButton">Add Grid</button>
+          <button onClick={openAddComponentModal}>Add Component</button>
+
+          <AddComponentModal
+            isOpen={isModalOpen}
+            onClose={closeAddComponentModal}
+            onAddComponent={addComponent}
+          />
         </div>
       ) : (
         <p>No Album Info.</p>
