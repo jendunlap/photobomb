@@ -17,11 +17,23 @@ router.put('/albums/:id', controllers.updateAlbum)
 
 router.delete('/albums/:id', controllers.deleteAlbum)
 
-router.post('/albums/:albumId/grids', controllers.createGrid)
+router.post('/albums/:albumId/components', controllers.createComponent)
 
-router.put('/albums/:albumId/grids/:gridId', controllers.updateGrid)
+router.put(
+  '/albums/:albumId/components/:componentId',
+  controllers.updateComponent
+)
 
-router.delete('/albums/:albumId/grids/:gridId', controllers.deleteGrid)
+router.delete(
+  '/albums/:albumId/components/:componentId',
+  controllers.deleteComponent
+)
+
+// router.post('/albums/:albumId/grids', controllers.createGrid)
+
+// router.put('/albums/:albumId/grids/:gridId', controllers.updateGrid)
+
+// router.delete('/albums/:albumId/grids/:gridId', controllers.deleteGrid)
 
 router.post('/users', controllers.createUser)
 
