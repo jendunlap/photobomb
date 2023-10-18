@@ -71,12 +71,33 @@ const ModifyAlbum = () => {
           <button className="createAlbumButton" onClick={openAddComponentModal}>
             Add Component!
           </button>
+          <button className="createAlbumButton" onClick={handleSubmit}>
+            Save Changes!
+          </button>
 
           <AddComponentModal
             isOpen={isModalOpen}
             onClose={closeAddComponentModal}
             onAddComponent={addComponent}
           />
+
+          <div className="components-container">
+            {formState.components.map((component, index) => (
+              <div key={index}>
+                {component.type === 'image-link' && (
+                  <a
+                    href={component.data}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="componentLink"
+                  >
+                    IMAGE LINK stay tuned for API PHOTO DISPLAY!!
+                  </a>
+                )}
+                {component.type === 'text' && <p>{component.data}</p>}
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <p>No Album Info.</p>

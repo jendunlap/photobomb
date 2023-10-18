@@ -17,7 +17,8 @@ const Component = new Schema(
         text: { type: String, required: false }
       }
     },
-    album: { type: Schema.Types.ObjectId, ref: 'Album' }
+    album: { type: Schema.Types.ObjectId, ref: 'Album' },
+    _id: { type: mongoose.Schema.Types.ObjectId, auto: true }
   },
   { timestamps: true }
 )

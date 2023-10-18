@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import Modal from 'react-modal'
 
 Modal.setAppElement('#root')
 
 const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
+  const { albumId } = useParams()
   const [componentType, setComponentType] = useState('image-link')
   const [componentData, setComponentData] = useState('')
 
@@ -11,7 +13,8 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
     if (componentType && componentData) {
       return {
         type: componentType,
-        data: componentData
+        data: componentData,
+        album: albumId
       }
     }
     return null
@@ -23,18 +26,21 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
 
     if (componentType && componentData) {
       const newComponent = createComponent(componentType, componentData)
-      // if (newComponent) {
-      const additionSuccessful = onAddComponent(newComponent)
-      // if (additionSuccessful) {
+      if (newComponent) {
+        const additionSuccessful = onAddComponent(newComponent)
+        if (additionSuccessful) {
+          onClose()
+        } else {
+          console.log('Error adding component:')
+          onClose()
+        }
+      } else {
+        console.log('Error adding component: type or data missing')
+        onClose()
+      }
+    } else {
+      console.log('Error adding component: type or data missing')
       onClose()
-      //     } else {
-      //       console.log('Error adding component:')
-      //     }
-      //   } else {
-      //     console.log('Error adding component: type or data missing')
-      //   }
-      // } else {
-      //   console.log('Error adding component: type or data missing')
     }
   }
 

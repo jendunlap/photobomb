@@ -103,6 +103,13 @@ body {
   font-size: 5em;
 }
 
+/* EDIT ALBUM PAGE */
+
+.componentLink {
+  color: white;
+  text-decoration: none;
+}
+
 /* MODAL */
 
 .modalHeader {

@@ -5,7 +5,16 @@ const Album = new Schema(
   {
     name: { type: String, required: false },
     image: { type: String, required: false },
-    components: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Component' }]
+    components: [
+      {
+        type: String,
+        data: String,
+        album: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Album'
+        }
+      }
+    ]
   },
   { timestamps: true }
 )
