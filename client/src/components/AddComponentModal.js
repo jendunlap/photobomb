@@ -4,9 +4,13 @@ import Modal from 'react-modal'
 Modal.setAppElement('#root')
 
 const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
-  const [componentType, setComponentType] = useState('image')
+  const [componentType, setComponentType] = useState('image-link')
   const [componentData, setComponentData] = useState('')
   const [imageLink, setImageLink] = useState('')
+
+  const handleImageSelect = (link) => {
+    setImageLink(link)
+  }
 
   const createComponent = (type, data) => {
     return {
@@ -16,12 +20,15 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
   }
 
   const handleAddComponent = () => {
-    const newComponent = createComponent({
-      type: componentType,
-      data: componentData
-    })
-    onAddComponent(newComponent)
-    onClose()
+    console.log('componentType:', componentType)
+    console.log('componentData:', componentData)
+    const newComponent = createComponent(componentType, componentData)
+    const additionSuccessful = onAddComponent(newComponent)
+    if (additionSuccessful) {
+      onClose()
+    } else {
+      console.log('Error adding component:')
+    }
   }
 
   return (

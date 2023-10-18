@@ -19,18 +19,11 @@ const ModifyAlbum = () => {
   const [componentType, setComponentType] = useState('image')
   const [componentData, setComponentData] = useState('')
 
-  const createComponent = (componentData) => {
+  const createComponent = (componentType, componentData) => {
     return {
       type: componentData.type,
       data: componentData.data
     }
-  }
-
-  const addComponent = (newComponent) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      components: [...prevState.components, newComponent]
-    }))
   }
 
   const openAddComponentModal = () => {
@@ -39,15 +32,28 @@ const ModifyAlbum = () => {
     addComponent(newComponent)
   }
 
+  const addComponent = (newComponent) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      components: [...prevState.components, newComponent]
+    }))
+    console.log('Updated Form State:', formState)
+  }
+
   const closeAddComponentModal = () => {
     setIsModalOpen(false)
   }
+
+  useEffect(() => {
+    console.log('Updated Form State:', formState)
+  }, [formState])
 
   useEffect(() => {
     const getAlbumInfo = async () => {
       const response = await axios.get(`/albums/${albumId}`)
       setAlbumInfo(response.data.album)
       setFormState(response.data.album)
+      console.log(response.data.album)
     }
     getAlbumInfo()
   }, [])
