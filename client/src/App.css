@@ -34,7 +34,7 @@ body {
 
 /* HOMEPAGE */
 
-.home {
+.home, .about {
   height: 100vh;
   display: flex;
   flex-direction: column;

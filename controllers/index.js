@@ -1,6 +1,7 @@
 const Album = require('../models/album')
 const User = require('../models/user')
 const Grid = require('../models/grid')
+const Component = require('../models/component')
 
 // ALBUM
 
@@ -76,79 +77,159 @@ const deleteAlbum = async (req, res) => {
   }
 }
 
+//COMPONENTS
+
+const createComponent = async (req, res) => {
+  try {
+    const albumId = req.params.albumId
+    const componentData = req.body
+    const album = await Album.findById(albumId)
+
+    if (!album) {
+      return res.status(404).send('Album not found')
+    }
+
+    const component = await new Component({ ...componentData, album: albumId })
+    await component.save()
+
+    album.components.push(component._id)
+    await album.save()
+
+    return res.status(201).json({ component })
+  } catch (error) {
+    console.error('Error creating component:', error)
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+const updateComponent = async (req, res) => {
+  try {
+    const albumId = req.params.albumId
+    const componentId = req.params.componentId
+    const componentData = req.body
+
+    const album = await Album.findById(albumId)
+    if (!album) {
+      return res.status(404).send('Album not found')
+    }
+
+    const component = await Component.findOne({
+      _id: componentId,
+      album: componentId
+    })
+    if (!component) {
+      return res.status(404).send('Component not found')
+    }
+
+    component.set(componentData)
+    await component.save()
+
+    return res.status(200).json({ component })
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+const deleteComponent = async (req, res) => {
+  try {
+    const albumId = req.params.albumId
+    const componentId = req.params.componentId
+    const album = await Album.findById(albumId)
+    if (!album) {
+      return res.status(404).send('Album not found')
+    }
+
+    const component = await Component.findOne({
+      _id: componentId,
+      album: albumId
+    })
+    if (!component) {
+      return res.status(404).send('Component not found')
+    }
+
+    album.components.pull(gridId)
+    await album.save()
+    await component.remove()
+
+    return res.status(200).send('Component deleted')
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
 // GRIDS
 
-const createGrid = async (req, res) => {
-  try {
-    const albumId = req.params.albumId
-    const gridData = req.body
-    const album = await Album.findById(albumId)
+// const createGrid = async (req, res) => {
+//   try {
+//     const albumId = req.params.albumId
+//     const gridData = req.body
+//     const album = await Album.findById(albumId)
 
-    if (!album) {
-      return res.status(404).send('Album not found')
-    }
+//     if (!album) {
+//       return res.status(404).send('Album not found')
+//     }
 
-    const grid = await new Grid({ ...gridData, album: albumId })
-    await grid.save()
+//     const grid = await new Grid({ ...gridData, album: albumId })
+//     await grid.save()
 
-    album.grids.push(grid._id)
-    await album.save()
+//     album.grids.push(grid._id)
+//     await album.save()
 
-    return res.status(201).json({ grid })
-  } catch (error) {
-    console.error('Error creating grid:', error)
-    return res.status(500).json({ error: error.message })
-  }
-}
+//     return res.status(201).json({ grid })
+//   } catch (error) {
+//     console.error('Error creating grid:', error)
+//     return res.status(500).json({ error: error.message })
+//   }
+// }
 
-const updateGrid = async (req, res) => {
-  try {
-    const albumId = req.params.albumId
-    const gridId = req.params.gridId
-    const gridData = req.body
+// const updateGrid = async (req, res) => {
+//   try {
+//     const albumId = req.params.albumId
+//     const gridId = req.params.gridId
+//     const gridData = req.body
 
-    const album = await Album.findById(albumId)
-    if (!album) {
-      return res.status(404).send('Album not found')
-    }
+//     const album = await Album.findById(albumId)
+//     if (!album) {
+//       return res.status(404).send('Album not found')
+//     }
 
-    const grid = await Grid.findOne({ _id: gridId, album: albumId })
-    if (!grid) {
-      return res.status(404).send('Grid not found')
-    }
+//     const grid = await Grid.findOne({ _id: gridId, album: albumId })
+//     if (!grid) {
+//       return res.status(404).send('Grid not found')
+//     }
 
-    grid.set(gridData)
-    await grid.save()
+//     grid.set(gridData)
+//     await grid.save()
 
-    return res.status(200).json({ grid })
-  } catch (error) {
-    return res.status(500).json({ error: error.message })
-  }
-}
+//     return res.status(200).json({ grid })
+//   } catch (error) {
+//     return res.status(500).json({ error: error.message })
+//   }
+// }
 
-const deleteGrid = async (req, res) => {
-  try {
-    const albumId = req.params.albumId
-    const gridId = req.params.gridId
-    const album = await Album.findById(albumId)
-    if (!album) {
-      return res.status(404).send('Album not found')
-    }
+// const deleteGrid = async (req, res) => {
+//   try {
+//     const albumId = req.params.albumId
+//     const gridId = req.params.gridId
+//     const album = await Album.findById(albumId)
+//     if (!album) {
+//       return res.status(404).send('Album not found')
+//     }
 
-    const grid = await Grid.findOne({ _id: gridId, album: albumId })
-    if (!grid) {
-      return res.status(404).send('Grid not found')
-    }
+//     const grid = await Grid.findOne({ _id: gridId, album: albumId })
+//     if (!grid) {
+//       return res.status(404).send('Grid not found')
+//     }
 
-    album.grids.pull(gridId)
-    await album.save()
-    await grid.remove()
+//     album.grids.pull(gridId)
+//     await album.save()
+//     await grid.remove()
 
-    return res.status(200).send('Grid deleted')
-  } catch (error) {
-    return res.status(500).json({ error: error.message })
-  }
-}
+//     return res.status(200).send('Grid deleted')
+//   } catch (error) {
+//     return res.status(500).json({ error: error.message })
+//   }
+// }
 
 // USERS
 
@@ -218,6 +299,9 @@ module.exports = {
   getAlbumByName,
   updateAlbum,
   deleteAlbum,
+  createComponent,
+  updateComponent,
+  deleteComponent,
   createGrid,
   updateGrid,
   deleteGrid,

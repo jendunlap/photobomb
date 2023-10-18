@@ -16,20 +16,9 @@ const ModifyAlbum = () => {
   const [formState, setFormState] = useState(initialState)
   const [albumInfo, setAlbumInfo] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [componentType, setComponentType] = useState('image')
-  const [componentData, setComponentData] = useState('')
-
-  const createComponent = (componentType, componentData) => {
-    return {
-      type: componentData.type,
-      data: componentData.data
-    }
-  }
 
   const openAddComponentModal = () => {
     setIsModalOpen(true)
-    // const newComponent = createComponent(componentType, componentData)
-    // addComponent(newComponent)
   }
 
   const addComponent = (newComponent) => {
@@ -54,7 +43,7 @@ const ModifyAlbum = () => {
       setFormState(response.data.album)
     }
     getAlbumInfo()
-  }, [])
+  }, [albumId])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
