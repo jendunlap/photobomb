@@ -32,12 +32,15 @@ const AlbumInfo = () => {
     <div>
       {albumInfo ? (
         <div>
-          <img
-            className="albumBanner"
-            src={albumInfo.image}
-            alt={albumInfo.name}
-          />
-          <h1 className="albumBannerName">{albumInfo.name}</h1>
+          <div className="bannerContainer">
+            <img
+              className="albumBanner"
+              src={albumInfo.image}
+              alt={albumInfo.name}
+            />
+            <h1 className="albumBannerName">{albumInfo.name}</h1>
+          </div>
+          <button className="createAlbumButton">Add Component!</button>
         </div>
       ) : (
         <p>No Album Info.</p>

@@ -78,3 +78,28 @@ body {
   padding: 1em;
   margin: 1em;
 }
+
+/* ALBUM PAGE */
+
+.bannerContainer {
+  position: relative;
+  width: 100vw;
+  height: 50vh;
+}
+
+  .albumBanner {
+    width: 100%;
+    height: 100%;
+  object-fit: cover;
+}
+
+.albumBannerName {
+  position: absolute;
+  top: 1.5em;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  color: #0f111b;
+  font-size: 5em;
+}
