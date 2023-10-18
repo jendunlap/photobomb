@@ -28,8 +28,8 @@ const ModifyAlbum = () => {
 
   const openAddComponentModal = () => {
     setIsModalOpen(true)
-    const newComponent = createComponent(componentType, componentData)
-    addComponent(newComponent)
+    // const newComponent = createComponent(componentType, componentData)
+    // addComponent(newComponent)
   }
 
   const addComponent = (newComponent) => {
@@ -37,7 +37,6 @@ const ModifyAlbum = () => {
       ...prevState,
       components: [...prevState.components, newComponent]
     }))
-    console.log('Updated Form State:', formState)
   }
 
   const closeAddComponentModal = () => {
@@ -53,7 +52,6 @@ const ModifyAlbum = () => {
       const response = await axios.get(`/albums/${albumId}`)
       setAlbumInfo(response.data.album)
       setFormState(response.data.album)
-      console.log(response.data.album)
     }
     getAlbumInfo()
   }, [])

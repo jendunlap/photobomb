@@ -12,22 +12,41 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
     setImageLink(link)
   }
 
-  const createComponent = (type, data) => {
-    return {
-      type: type,
-      data: data
+  const createComponent = () => {
+    if (componentType && componentData) {
+      return {
+        type: componentType,
+        data: componentData
+      }
     }
+    return null
   }
+
+  // const createComponent = (type, data) => {
+  //   return {
+  //     type: type,
+  //     data: data
+  //   }
+  // }
 
   const handleAddComponent = () => {
     console.log('componentType:', componentType)
     console.log('componentData:', componentData)
-    const newComponent = createComponent(componentType, componentData)
-    const additionSuccessful = onAddComponent(newComponent)
-    if (additionSuccessful) {
-      onClose()
+
+    if (componentType && componentData) {
+      const newComponent = createComponent(componentType, componentData)
+      if (newComponent) {
+        const additionSuccessful = onAddComponent(newComponent)
+        if (additionSuccessful) {
+          onClose()
+        } else {
+          console.log('Error adding component:')
+        }
+      } else {
+        console.log('Error adding component: type or data missing')
+      }
     } else {
-      console.log('Error adding component:')
+      console.log('Error adding component: type or data missing')
     }
   }
 
