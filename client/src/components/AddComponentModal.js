@@ -21,13 +21,6 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
     setFormState({ ...formState, [name]: value })
   }
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault()
-  //   console.log(formState)
-  //   await axios.post(`/albums/${albumId}/components`, formState)
-  //   onClose()
-  // }
-
   const handleSubmit = async (event) => {
     event.preventDefault()
 
@@ -38,7 +31,7 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
     if (type === 'image') {
       componentData.image = {
         imageUrl: data,
-        altText: '' // You may need to provide this too
+        altText: ''
       }
     } else if (type === 'text') {
       componentData.text = {
@@ -54,7 +47,6 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
 
     console.log(requestData)
 
-    // Send the requestData to the server
     await axios.post(`/albums/${albumId}/components`, requestData)
     onClose()
   }

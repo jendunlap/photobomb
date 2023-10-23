@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import CreateGrid from './CreateGrid'
+// import CreateGrid from './CreateGrid'
 import Hero from '../components/Hero'
 import Image from '../components/Image'
 import Images from '../components/Images'
@@ -16,7 +16,7 @@ const Registry = ({ component, onEdit }) => {
     case 'Grid':
       return (
         <div>
-          <CreateGrid content={component.content} onEdit={onEdit} />
+          {/* <CreateGrid content={component.content} onEdit={onEdit} /> */}
           {/* <button onClick={handleEditClick}>Edit</button> */}
         </div>
       )

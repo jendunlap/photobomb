@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import AddComponentModal from '../components/AddComponentModal'
+import Component from '../components/Component'
 
 const ModifyAlbum = () => {
   let { albumId } = useParams()
@@ -15,36 +16,40 @@ const ModifyAlbum = () => {
 
   const [formState, setFormState] = useState(initialState)
   const [albumInfo, setAlbumInfo] = useState(null)
+  const [albumComponents, setAlbumComponents] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const openAddComponentModal = () => {
     setIsModalOpen(true)
   }
 
-  const addComponent = (newComponent) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      components: [...prevState.components, newComponent]
-    }))
-  }
-
-  const closeAddComponentModal = () => {
+  const closeAddComponentModal = async () => {
     setIsModalOpen(false)
-  }
 
-  useEffect(() => {
-    console.log('Updated Form State:', formState)
-  }, [formState])
+    const componentsResponse = await axios.get(`/albums/${albumId}/components`)
+    setAlbumComponents(componentsResponse.data.components)
+  }
 
   useEffect(() => {
     const getAlbumInfo = async () => {
-      const response = await axios.get(`/albums/${albumId}`)
-      setAlbumInfo(response.data.album)
-      setFormState(response.data.album)
-      console.log(response.data.album)
+      try {
+        const [albumResponse, componentsResponse] = await Promise.all([
+          axios.get(`/albums/${albumId}`),
+          axios.get(`/albums/${albumId}/components`)
+        ])
+        setFormState(albumResponse.data.album)
+        setAlbumInfo(albumResponse.data.album)
+        setAlbumComponents(componentsResponse.data.components)
+      } catch (error) {
+        console.error('Error fetching album information and components:', error)
+      }
     }
     getAlbumInfo()
   }, [albumId])
+
+  useEffect(() => {
+    console.log('Form State:', formState)
+  }, [formState])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -79,25 +84,18 @@ const ModifyAlbum = () => {
           <AddComponentModal
             isOpen={isModalOpen}
             onClose={closeAddComponentModal}
-            onAddComponent={addComponent}
           />
 
-          <div className="components-container">
-            {albumInfo.components.map((component, index) => (
-              <div key={index}>
-                {component.type === 'image-link' && (
-                  <a
-                    href={component.data}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="componentLink"
-                  >
-                    IMAGE LINK stay tuned for API PHOTO DISPLAY!!
-                  </a>
-                )}
-                {component.type === 'text' && <p>{component.data}</p>}
-              </div>
-            ))}
+          <div>
+            {albumComponents.map((component) =>
+              component && component._id && component.type && component.data ? (
+                <Component
+                  key={component._id}
+                  type={component.type}
+                  data={component.data}
+                />
+              ) : null
+            )}
           </div>
         </div>
       ) : (

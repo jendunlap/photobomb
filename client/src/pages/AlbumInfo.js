@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Component from '../components/Component'
 
 const AlbumInfo = () => {
   let { albumId } = useParams()
@@ -10,12 +11,23 @@ const AlbumInfo = () => {
   const [albumComponents, setAlbumComponents] = useState([])
 
   const getAlbumInfo = async () => {
-    const response = await axios.get(`/albums/${albumId}`)
+    try {
+      const [albumResponse, componentsResponse] = await Promise.all([
+        axios.get(`/albums/${albumId}`),
+        axios.get(`/albums/${albumId}/components`)
+      ])
 
-    setAlbumInfo(response.data.album)
-    setAlbumComponents(response.data.album.components)
-    console.log(response.data.album)
+      setAlbumInfo(albumResponse.data.album)
+      setAlbumComponents(componentsResponse.data.components)
+      console.log(albumComponents)
+    } catch (error) {
+      console.error('Error fetching album information and components:', error)
+    }
   }
+
+  useEffect(() => {
+    console.log(albumComponents)
+  }, [albumComponents])
 
   const deleteAlbum = async () => {
     await axios.delete(`/albums/${albumId}`)
@@ -48,6 +60,20 @@ const AlbumInfo = () => {
             <button className="createAlbumButton" onClick={modifyAlbum}>
               Edit Album!
             </button>
+            <div>
+              {albumComponents.map((component) =>
+                component &&
+                component._id &&
+                component.type &&
+                component.data ? (
+                  <Component
+                    key={component._id}
+                    type={component.type}
+                    data={component.data}
+                  />
+                ) : null
+              )}
+            </div>
           </div>
         </div>
       ) : (
@@ -58,42 +84,3 @@ const AlbumInfo = () => {
 }
 
 export default AlbumInfo
-
-// return (
-//   <div>
-//     {albumInfo ? (
-//       <div>
-//         <div className="bannerContainer">
-//           <img
-//             className="albumBanner"
-//             src={albumInfo.image}
-//             alt={albumInfo.name}
-//           />
-//           <h1 className="albumBannerName">{albumInfo.name}</h1>
-//           <button className="createAlbumButton" onClick={modifyAlbum}>
-//             Edit Album!
-//           </button>
-//         </div>
-//         <div>
-//           {albumComponents.map((component, index) => (
-//             <div key={index}>
-//               {component.type === 'image-link' && (
-//                 <a
-//                   href={component.data}
-//                   target="_blank"
-//                   rel="noreferrer"
-//                   className="componentLink"
-//                 >
-//                   IMAGE LINK stay tuned for API PHOTO DISPLAY!!
-//                 </a>
-//               )}
-//               {component.type === 'text' && <p>{component.data}</p>}
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     ) : (
-//       <p>No Album Info.</p>
-//     )}
-//   </div>
-// )
