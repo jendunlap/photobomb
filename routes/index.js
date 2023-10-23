@@ -19,6 +19,11 @@ router.delete('/albums/:id', controllers.deleteAlbum)
 
 router.post('/albums/:albumId/components', controllers.createComponent)
 
+router.get(
+  '/albums/:albumId/components/:componentId',
+  controllers.getComponentById
+)
+
 router.put(
   '/albums/:albumId/components/:componentId',
   controllers.updateComponent
