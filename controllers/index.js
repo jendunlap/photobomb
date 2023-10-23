@@ -105,6 +105,23 @@ const createComponent = async (req, res) => {
   }
 }
 
+const getAlbumComponents = async (req, res) => {
+  try {
+    const albumId = req.params.albumId
+
+    const album = await Album.findById(albumId)
+    if (!album) {
+      return res.status(404).send('Album not found')
+    }
+
+    const components = await Component.find({ album: albumId })
+
+    return res.status(200).json({ components })
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
 const getComponentById = async (req, res) => {
   try {
     const albumId = req.params.albumId
@@ -143,13 +160,14 @@ const updateComponent = async (req, res) => {
 
     const component = await Component.findOne({
       _id: componentId,
-      album: componentId
+      album: albumId
     })
     if (!component) {
       return res.status(404).send('Component not found')
     }
 
     component.set(componentData)
+
     await component.save()
 
     return res.status(200).json({ component })
@@ -175,9 +193,9 @@ const deleteComponent = async (req, res) => {
       return res.status(404).send('Component not found')
     }
 
-    album.components.pull(gridId)
+    album.components.pull(componentId)
     await album.save()
-    await component.remove()
+    await component.deleteOne()
 
     return res.status(200).send('Component deleted')
   } catch (error) {
@@ -328,6 +346,7 @@ module.exports = {
   updateAlbum,
   deleteAlbum,
   createComponent,
+  getAlbumComponents,
   getComponentById,
   updateComponent,
   deleteComponent,
