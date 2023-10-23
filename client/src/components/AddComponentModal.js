@@ -7,44 +7,57 @@ Modal.setAppElement('#root')
 
 const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
   const { albumId } = useParams()
-  const [componentType, setComponentType] = useState('image-link')
-  const [componentData, setComponentData] = useState('')
 
-  const createComponent = () => {
-    if (componentType && componentData) {
-      return {
-        type: componentType,
-        data: componentData,
-        album: albumId
-      }
-    }
-    return null
+  const initialState = {
+    type: 'image',
+    data: '',
+    album: albumId
   }
 
-  const handleAddComponent = async () => {
-    if (componentType && componentData) {
-      const newComponent = createComponent()
-      if (newComponent) {
-        onAddComponent(newComponent)
-        try {
-          await axios.post(`/albums/${albumId}/components`, newComponent)
-        } catch (error) {
-          console.error('Error creating component:', error)
-        }
-        onClose()
-      }
-    }
+  const [formState, setFormState] = useState(initialState)
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setFormState({ ...formState, [name]: value })
   }
 
-  // const handleAddComponent = () => {
-  //   if (componentType && componentData) {
-  //     const newComponent = createComponent()
-  //     if (newComponent) {
-  //       onAddComponent(newComponent)
-  //       onClose()
-  //     }
-  //   }
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault()
+  //   console.log(formState)
+  //   await axios.post(`/albums/${albumId}/components`, formState)
+  //   onClose()
   // }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    const { type, data, album } = formState
+
+    let componentData = {}
+
+    if (type === 'image') {
+      componentData.image = {
+        imageUrl: data,
+        altText: '' // You may need to provide this too
+      }
+    } else if (type === 'text') {
+      componentData.text = {
+        text: data
+      }
+    }
+
+    const requestData = {
+      type,
+      data: componentData,
+      album
+    }
+
+    console.log(requestData)
+
+    // Send the requestData to the server
+    await axios.post(`/albums/${albumId}/components`, requestData)
+    onClose()
+  }
 
   return (
     <Modal
@@ -55,23 +68,20 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
       <h2 className="modalHeader">ADD COMPONENT!</h2>
       <div className="modalOptions">
         <label className="modalLabel">select type:</label>
-        <select
-          value={componentType}
-          onChange={(e) => setComponentType(e.target.value)}
-        >
+        <select name="type" value={formState.type} onChange={handleChange}>
           <option value="image">Image</option>
           <option value="text">Text</option>
-          <option value="image-link">Image Link</option>
         </select>
         <label className="modalLabel">enter info:</label>
         <input
           type="text"
-          value={componentData}
-          onChange={(e) => setComponentData(e.target.value)}
+          name="data"
+          value={formState.data}
+          onChange={handleChange}
         />
       </div>
       <div className="modalButtons">
-        <button className="modalButton" onClick={handleAddComponent}>
+        <button className="modalButton" onClick={handleSubmit}>
           Add Component!
         </button>
         <button className="modalButton" onClick={onClose}>
@@ -83,3 +93,79 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
 }
 
 export default AddComponentModal
+
+// import { useState } from 'react'
+// import { useParams } from 'react-router-dom'
+// import Modal from 'react-modal'
+// import axios from 'axios'
+
+// Modal.setAppElement('#root')
+
+// const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
+//   const { albumId } = useParams()
+//   const [componentType, setComponentType] = useState('image-link')
+//   const [componentData, setComponentData] = useState('')
+
+//   const createComponent = () => {
+//     if (componentType && componentData) {
+//       return {
+//         type: componentType,
+//         data: componentData,
+//         album: albumId
+//       }
+//     }
+//     return null
+//   }
+
+//   const handleAddComponent = async () => {
+//     if (componentType && componentData) {
+//       const newComponent = createComponent()
+//       if (newComponent) {
+//         onAddComponent(newComponent)
+//         try {
+//           await axios.post(`/albums/${albumId}/components`, newComponent)
+//         } catch (error) {
+//           console.error('Error creating component:', error)
+//         }
+//         onClose()
+//       }
+//     }
+//   }
+
+//   return (
+//     <Modal
+//       isOpen={isOpen}
+//       onRequestClose={onClose}
+//       contentLabel="Add Component Modal"
+//     >
+//       <h2 className="modalHeader">ADD COMPONENT!</h2>
+//       <div className="modalOptions">
+//         <label className="modalLabel">select type:</label>
+//         <select
+//           value={componentType}
+//           onChange={(e) => setComponentType(e.target.value)}
+//         >
+//           <option value="image">Image</option>
+//           <option value="text">Text</option>
+//           <option value="image-link">Image Link</option>
+//         </select>
+//         <label className="modalLabel">enter info:</label>
+//         <input
+//           type="text"
+//           value={componentData}
+//           onChange={(e) => setComponentData(e.target.value)}
+//         />
+//       </div>
+//       <div className="modalButtons">
+//         <button className="modalButton" onClick={handleAddComponent}>
+//           Add Component!
+//         </button>
+//         <button className="modalButton" onClick={onClose}>
+//           Cancel!
+//         </button>
+//       </div>
+//     </Modal>
+//   )
+// }
+
+// export default AddComponentModal

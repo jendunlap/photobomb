@@ -84,6 +84,7 @@ const createComponent = async (req, res) => {
   try {
     const albumId = req.params.albumId
     const componentData = req.body
+    console.log('Received component data:', componentData)
     const album = await Album.findById(albumId)
 
     if (!album) {
@@ -91,6 +92,7 @@ const createComponent = async (req, res) => {
     }
 
     const component = await new Component({ ...componentData, album: albumId })
+    console.log('Created component:', component)
     await component.save()
 
     album.components.push(component._id)
@@ -99,6 +101,31 @@ const createComponent = async (req, res) => {
     return res.status(201).json({ component })
   } catch (error) {
     console.error('Error creating component:', error)
+    return res.status(500).json({ error: error.message })
+  }
+}
+
+const getComponentById = async (req, res) => {
+  try {
+    const albumId = req.params.albumId
+    const componentId = req.params.componentId
+
+    const album = await Album.findById(albumId)
+    if (!album) {
+      return res.status(404).send('Album not found')
+    }
+
+    const component = await Component.findOne({
+      _id: componentId,
+      album: albumId
+    })
+
+    if (!component) {
+      return res.status(404).send('Component not found')
+    }
+
+    return res.status(200).json({ component })
+  } catch (error) {
     return res.status(500).json({ error: error.message })
   }
 }
@@ -301,6 +328,7 @@ module.exports = {
   updateAlbum,
   deleteAlbum,
   createComponent,
+  getComponentById,
   updateComponent,
   deleteComponent,
   // createGrid,
