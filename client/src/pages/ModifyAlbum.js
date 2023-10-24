@@ -19,17 +19,6 @@ const ModifyAlbum = () => {
   const [albumComponents, setAlbumComponents] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const openAddComponentModal = () => {
-    setIsModalOpen(true)
-  }
-
-  const closeAddComponentModal = async () => {
-    setIsModalOpen(false)
-
-    const componentsResponse = await axios.get(`/albums/${albumId}/components`)
-    setAlbumComponents(componentsResponse.data.components)
-  }
-
   useEffect(() => {
     const getAlbumInfo = async () => {
       try {
@@ -47,19 +36,43 @@ const ModifyAlbum = () => {
     getAlbumInfo()
   }, [albumId])
 
+  const openAddComponentModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const closeAddComponentModal = async () => {
+    setIsModalOpen(false)
+
+    const componentsResponse = await axios.get(`/albums/${albumId}/components`)
+    setAlbumComponents(componentsResponse.data.components)
+  }
+
   useEffect(() => {
     console.log('Form State:', formState)
   }, [formState])
+
+  const handleChange = (event) => {
+    setFormState({ ...formState, [event.target.id]: event.target.value })
+  }
+
+  const deleteComponent = async (componentId) => {
+    try {
+      await axios.delete(`/albums/${albumId}/components/${componentId}`)
+
+      const componentsResponse = await axios.get(
+        `/albums/${albumId}/components`
+      )
+      setAlbumComponents(componentsResponse.data.components)
+    } catch (error) {
+      console.error('Error deleting component:', error)
+    }
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     await axios.put(`/albums/${albumId}`, formState)
     setFormState(initialState)
     navigate(`/albums/${albumId}`)
-  }
-
-  const handleChange = (event) => {
-    setFormState({ ...formState, [event.target.id]: event.target.value })
   }
 
   return (
@@ -89,11 +102,12 @@ const ModifyAlbum = () => {
           <div>
             {albumComponents.map((component) =>
               component && component._id && component.type && component.data ? (
-                <Component
-                  key={component._id}
-                  type={component.type}
-                  data={component.data}
-                />
+                <div key={component._id}>
+                  <Component type={component.type} data={component.data} />
+                  <button onClick={() => deleteComponent(component._id)}>
+                    DELETE
+                  </button>
+                </div>
               ) : null
             )}
           </div>

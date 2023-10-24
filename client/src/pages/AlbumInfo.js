@@ -19,7 +19,6 @@ const AlbumInfo = () => {
 
       setAlbumInfo(albumResponse.data.album)
       setAlbumComponents(componentsResponse.data.components)
-      console.log(albumComponents)
     } catch (error) {
       console.error('Error fetching album information and components:', error)
     }

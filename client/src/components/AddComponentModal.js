@@ -48,6 +48,7 @@ const AddComponentModal = ({ isOpen, onClose, onAddComponent }) => {
     console.log(requestData)
 
     await axios.post(`/albums/${albumId}/components`, requestData)
+    setFormState(initialState)
     onClose()
   }
 
