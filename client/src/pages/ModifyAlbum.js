@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import AddComponentModal from '../components/AddComponentModal'
+import ModifyComponentModal from '../components/ModifyComponentModal'
 import Component from '../components/Component'
 
 const ModifyAlbum = () => {
