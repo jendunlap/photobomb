@@ -52,10 +52,6 @@ const ModifyAlbum = () => {
     console.log('Form State:', formState)
   }, [formState])
 
-  const handleChange = (event) => {
-    setFormState({ ...formState, [event.target.id]: event.target.value })
-  }
-
   const deleteComponent = async (componentId) => {
     try {
       await axios.delete(`/albums/${albumId}/components/${componentId}`)
@@ -67,6 +63,10 @@ const ModifyAlbum = () => {
     } catch (error) {
       console.error('Error deleting component:', error)
     }
+  }
+
+  const handleChange = (event) => {
+    setFormState({ ...formState, [event.target.id]: event.target.value })
   }
 
   const handleSubmit = async (event) => {
@@ -106,7 +106,7 @@ const ModifyAlbum = () => {
                 <div key={component._id}>
                   <Component type={component.type} data={component.data} />
                   <button onClick={() => deleteComponent(component._id)}>
-                    DELETE
+                    Delete
                   </button>
                 </div>
               ) : null
