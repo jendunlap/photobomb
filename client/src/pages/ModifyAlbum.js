@@ -19,6 +19,8 @@ const ModifyAlbum = () => {
   const [albumInfo, setAlbumInfo] = useState(null)
   const [albumComponents, setAlbumComponents] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedComponentId, setSelectedComponentId] = useState(null)
+  const [isModifyModalOpen, setIsModifyModalOpen] = useState(false)
 
   useEffect(() => {
     const getAlbumInfo = async () => {
@@ -43,6 +45,18 @@ const ModifyAlbum = () => {
 
   const closeAddComponentModal = async () => {
     setIsModalOpen(false)
+
+    const componentsResponse = await axios.get(`/albums/${albumId}/components`)
+    setAlbumComponents(componentsResponse.data.components)
+  }
+
+  const handleModifyComponent = (componentId) => {
+    setSelectedComponentId(componentId)
+    setIsModifyModalOpen(true)
+  }
+
+  const closeModifyComponentModal = async () => {
+    setIsModifyModalOpen(false)
 
     const componentsResponse = await axios.get(`/albums/${albumId}/components`)
     setAlbumComponents(componentsResponse.data.components)
@@ -100,11 +114,20 @@ const ModifyAlbum = () => {
             onClose={closeAddComponentModal}
           />
 
+          <ModifyComponentModal
+            isOpen={isModifyModalOpen}
+            onClose={closeModifyComponentModal}
+            componentId={selectedComponentId} // Pass the selected componentId as a prop
+          />
+
           <div>
             {albumComponents.map((component) =>
               component && component._id && component.type && component.data ? (
                 <div key={component._id}>
                   <Component type={component.type} data={component.data} />
+                  <button onClick={() => handleModifyComponent(component._id)}>
+                    Modify
+                  </button>
                   <button onClick={() => deleteComponent(component._id)}>
                     Delete
                   </button>

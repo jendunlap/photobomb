@@ -9,7 +9,9 @@ const ModifyComponentModal = ({
   isOpen,
   onClose,
   onModifyComponent,
-  componentData
+  componentData,
+  componentId,
+  isFetchingComponentData
 }) => {
   const { albumId } = useParams()
 
@@ -20,33 +22,65 @@ const ModifyComponentModal = ({
   }
 
   const [formState, setFormState] = useState(initialState)
+  const [formData, setFormData] = useState('')
   const [componentInfo, setComponentInfo] = useState(null)
 
   useEffect(() => {
-    const getComponentInfo = async (componentId) => {
+    const getComponentInfo = async () => {
       try {
         const response = await axios.get(
           `/albums/${albumId}/components/${componentId}`
         )
-
+        console.log(response.data.component)
         setFormState(response.data.component)
+
+        if (response.data.component.type === 'text') {
+          setFormData(response.data.component.data.text.text)
+        } else {
+          setFormData('')
+        }
+
         setComponentInfo(response.data.component)
       } catch (error) {
         console.error('Error fetching component:', error)
       }
     }
     getComponentInfo()
-  }, [])
+  }, [componentId])
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setFormState({ ...formState, [name]: value })
+
+    if (name === 'data') {
+      setFormData(value)
+    } else {
+      setFormState((prevFormState) => ({
+        ...prevFormState,
+        [name]: value
+      }))
+    }
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const { type, data, album } = formState
+    const { type, album } = formState
+    let data
+
+    if (type === 'image') {
+      data = {
+        image: {
+          imageUrl: formData,
+          altText: ''
+        }
+      }
+    } else if (type === 'text') {
+      data = {
+        text: {
+          text: formData
+        }
+      }
+    }
 
     const requestData = {
       type,
@@ -56,10 +90,7 @@ const ModifyComponentModal = ({
 
     console.log(requestData)
 
-    await axios.put(
-      `/albums/${albumId}/components/${componentData._id}`,
-      requestData
-    )
+    await axios.put(`/albums/${albumId}/components/${componentId}`, requestData)
     onClose()
   }
 
@@ -80,7 +111,7 @@ const ModifyComponentModal = ({
         <input
           type="text"
           name="data"
-          value={formState.data}
+          value={formData}
           onChange={handleChange}
         />
       </div>
