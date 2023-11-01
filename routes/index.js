@@ -19,6 +19,8 @@ router.delete('/albums/:id', controllers.deleteAlbum)
 
 router.post('/albums/:albumId/components', controllers.createComponent)
 
+router.post
+
 router.put(
   '/albums/:albumId/components/:componentId',
   controllers.updateComponent
@@ -46,11 +48,9 @@ router.delete(
   controllers.deleteComponent
 )
 
-// router.post('/albums/:albumId/grids', controllers.createGrid)
+router.post('/upload-image-to-imgur', addImage)
 
-// router.put('/albums/:albumId/grids/:gridId', controllers.updateGrid)
-
-// router.delete('/albums/:albumId/grids/:gridId', controllers.deleteGrid)
+router.post(`https://api.imgur.com/3/image`, controllers.addImage)
 
 router.post('/users', controllers.createUser)
 

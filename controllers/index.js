@@ -1,6 +1,5 @@
 const Album = require('../models/album')
 const User = require('../models/user')
-const Grid = require('../models/grid')
 const Component = require('../models/component')
 const mongoose = require('mongoose')
 
@@ -203,79 +202,30 @@ const deleteComponent = async (req, res) => {
   }
 }
 
-// GRIDS
+// IMGUR
 
-// const createGrid = async (req, res) => {
-//   try {
-//     const albumId = req.params.albumId
-//     const gridData = req.body
-//     const album = await Album.findById(albumId)
+const addImage = async (req, res) => {
+  const { imageBase64 } = req.body
 
-//     if (!album) {
-//       return res.status(404).send('Album not found')
-//     }
+  try {
+    const response = await axios.post(
+      'https://api.imgur.com/3/image',
+      imageBase64,
+      {
+        headers: {
+          Authorization: '16e48a88f10c212'
+        }
+      }
+    )
 
-//     const grid = await new Grid({ ...gridData, album: albumId })
-//     await grid.save()
+    const imgurImageUrl = response.data.data.link
 
-//     album.grids.push(grid._id)
-//     await album.save()
-
-//     return res.status(201).json({ grid })
-//   } catch (error) {
-//     console.error('Error creating grid:', error)
-//     return res.status(500).json({ error: error.message })
-//   }
-// }
-
-// const updateGrid = async (req, res) => {
-//   try {
-//     const albumId = req.params.albumId
-//     const gridId = req.params.gridId
-//     const gridData = req.body
-
-//     const album = await Album.findById(albumId)
-//     if (!album) {
-//       return res.status(404).send('Album not found')
-//     }
-
-//     const grid = await Grid.findOne({ _id: gridId, album: albumId })
-//     if (!grid) {
-//       return res.status(404).send('Grid not found')
-//     }
-
-//     grid.set(gridData)
-//     await grid.save()
-
-//     return res.status(200).json({ grid })
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message })
-//   }
-// }
-
-// const deleteGrid = async (req, res) => {
-//   try {
-//     const albumId = req.params.albumId
-//     const gridId = req.params.gridId
-//     const album = await Album.findById(albumId)
-//     if (!album) {
-//       return res.status(404).send('Album not found')
-//     }
-
-//     const grid = await Grid.findOne({ _id: gridId, album: albumId })
-//     if (!grid) {
-//       return res.status(404).send('Grid not found')
-//     }
-
-//     album.grids.pull(gridId)
-//     await album.save()
-//     await grid.remove()
-
-//     return res.status(200).send('Grid deleted')
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message })
-//   }
-// }
+    return res.status(201).json({ imageUrl: imgurImageUrl })
+  } catch (error) {
+    console.error('Image upload to Imgur failed:', error)
+    return res.status(500).json({ error: 'Image upload to Imgur failed' })
+  }
+}
 
 // USERS
 
@@ -350,6 +300,7 @@ module.exports = {
   getComponentById,
   updateComponent,
   deleteComponent,
+  addImage,
   // createGrid,
   // updateGrid,
   // deleteGrid,

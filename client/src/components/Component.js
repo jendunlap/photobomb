@@ -16,15 +16,6 @@ const Component = (props) => {
           </div>
         </div>
       )
-    case 'video':
-      // Render video component here
-      break
-    case 'audio':
-      // Render audio component here
-      break
-    case 'custom':
-      // Render custom component here
-      break
     default:
       return null // Handle unknown types or return nothing
   }
